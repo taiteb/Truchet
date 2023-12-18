@@ -1,20 +1,23 @@
+let grid = []
+let bg
+let c1
+let strk = 6
+
 function setup() {
   createCanvas(700, 700);
-  let c1 = color(145, 145, 30)
-  let c2 = color(30, 165, 80)
-  number_of_tiles = 30;
+  c1 = color(30, 165, 80)
+  number_of_tiles = 20;
   size = width / number_of_tiles;
-  background(255)
-  strokeWeight(2);
-
+  bg = color(255)
+  background(bg)
   for (x = 1; x < number_of_tiles - 1; x++) {
     for (y = 1; y < number_of_tiles - 1; y++) {
-      push();
       // translate(i * size, j * size);
       let xpos = x * size
       let ypos = y * size
-      strokeWeight(4)
-      stroke(c2)
+      grid.push([xpos, ypos])
+      strokeWeight(strk)
+      stroke(c1)
       which_to_draw = random(0, 3)
       if (which_to_draw < 1) {
         draw_circs(xpos, ypos);
@@ -23,12 +26,31 @@ function setup() {
       } else {
         draw_lines(xpos, ypos)
       }
-      pop();
     }
   }
 }
 
+let i = 0;
+
 function draw() {
+  frameRate(22)
+  let one_to_change = i++ % grid.length
+  xpos = grid[one_to_change][0]
+  ypos = grid[one_to_change][1]
+  fill(bg)
+  noStroke()
+  rect(xpos, ypos, size, size)
+  strokeWeight(strk)
+  stroke(c1)
+  which_to_draw = random(0, 3)
+  if (which_to_draw < 1) {
+    draw_circs(xpos, ypos);
+  } else if (which_to_draw < 2.7) {
+    draw_curves(grid[one_to_change][0], grid[one_to_change][1]);
+  } else {
+    draw_lines(grid[one_to_change][0], grid[one_to_change][1]);
+  }
+
 }
 
 function draw_curves(xpos, ypos) {
